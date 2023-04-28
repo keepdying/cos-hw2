@@ -36,8 +36,6 @@ void printProducts(struct Product *products, int num_products) {
 }
 
 struct Product createRandomProduct(int id) {
-    // Seed the random number generator with the current time
-    srand(time(NULL));
     // Generate random values for product_Price and product_Quantity
     int quantity = rand() % 10 + 1; // generate a random number between 1 and 10
     float price = ((float)rand() / RAND_MAX) * 199.0 + 1.0; // generate a random float between 1.0 and 200.0
@@ -57,12 +55,12 @@ struct Customer {
 };
 
 void printCustomers(struct Customer *customers, int num_customers){
-    printf("Customer ID Balance\n");
     for (int i = 0; i < num_customers; i++) {
+        printf("Customer ID Balance\n");
         printf("%d %.2f\n", customers[i].customer_ID, customers[i].customer_Balance);
         printf("Ordered Items:\n");
-        printProducts(customers[i].ordered_Items, MAX_ORDERED_ITEMS);
-        printf("\n");
+        printProducts(customers[i].ordered_Items, customers[i].num_ordered_Items);
+        printf("--------------------\n");
     }
 }
 
@@ -90,13 +88,12 @@ struct Customer createCustomer(int id, float balance) {
 }
 
 struct Customer createRandomCustomer(int id, struct Product *products, int num_products) {
-    // Seed the random number generator with the current time
-    srand(time(NULL));
     // Generate a random value for customer_Balance
-    float balance = ((float)rand() / RAND_MAX) * 200.0; // generate a random float between 0.0 and 200.0
+    float balance = ((float)rand() / RAND_MAX) * 2000.0; // generate a random float between 0.0 and 2000.0
     // Create and return a new Customer struct with the random value and provided id
     struct Customer c = createCustomer(id, balance);
     int num_ordered_Items = rand() % MAX_ORDERED_ITEMS; // generate a random number between 0 and MAX_ORDERED_ITEMS
+    c.num_ordered_Items = num_ordered_Items;
 
     for (int i = 0; i < num_ordered_Items; i++) {
         int product_ID = rand() % num_products; // generate a random number between 0 and NUM_PRODUCTS
