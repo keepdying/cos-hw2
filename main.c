@@ -17,28 +17,25 @@ void *processPayment(void *arg){
     int num_products = ((struct paymentArgs *)arg)->num_products;
 
     for (int i = 0; i < customer->num_ordered_Items; i++) {
-        int product_ID = customer->ordered_Items[i].product_ID;
+        int product_ID = customer->ordered_Items[i].product_ID - 1;
         int quantity = customer->ordered_Items[i].product_Quantity;
-        for (int j = 0; j < num_products; j++) {
-            if (products[j].product_ID == product_ID) {
-                pthread_mutex_lock(&lock);
-                if (products[j].product_Quantity >= quantity) {
-                    if(customer->customer_Balance >= (products[j].product_Price * quantity)){
-                        products[j].product_Quantity -= quantity;
-                        pthread_mutex_unlock(&lock);
-                        customer->purchased_Items[i] = customer->ordered_Items[i];
-                        customer->num_purchased_Items++;
-                        customer->customer_Balance -= (products[j].product_Price * quantity);
-                        printf("Customer %d has purchased %d of product %d\n", customer->customer_ID, quantity, product_ID);
-                    } else {
-                        pthread_mutex_unlock(&lock);
-                        printf("Customer %d does not have enough money to purchase %d of product %d\n", customer->customer_ID, quantity, product_ID);
-                    }
-                } else {
-                    pthread_mutex_unlock(&lock);
-                    printf("Customer %d couldn't purchase %d of product %d since not enought quantity.\n", customer->customer_ID, quantity, product_ID);
-                }
+        
+        pthread_mutex_lock(&lock);
+        if (products[product_ID].product_Quantity >= quantity) {
+            if(customer->customer_Balance >= (products[product_ID].product_Price * quantity)){
+                products[product_ID].product_Quantity -= quantity;
+                pthread_mutex_unlock(&lock);
+                customer->purchased_Items[i] = customer->ordered_Items[i];
+                customer->num_purchased_Items++;
+                customer->customer_Balance -= (products[product_ID].product_Price * quantity);
+                printf("Customer %d has purchased %d of product %d\n", customer->customer_ID, quantity, (product_ID + 1));
+            } else {
+                pthread_mutex_unlock(&lock);
+                printf("Customer %d does not have enough money to purchase %d of product %d\n", customer->customer_ID, quantity, (product_ID + 1));
             }
+        } else {
+            pthread_mutex_unlock(&lock);
+            printf("Customer %d couldn't purchase %d of product %d since not enought quantity.\n", customer->customer_ID, quantity, (product_ID + 1));
         }
     }
 }
