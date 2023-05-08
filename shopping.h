@@ -9,6 +9,8 @@
 #define NUM_CUSTOMERS 3
 #define MAX_ORDERED_ITEMS 10
 #define MAX_PURCHASED_ITEMS 10
+#define SCENARIO 1
+
 
 struct Product {
     int product_ID;
@@ -17,8 +19,8 @@ struct Product {
     /* add more members if needed */
 };
 
-struct Product createProduct(int id, int quantity, float price);
 void printProducts(struct Product *products, int num_products);
+struct Product createProduct(int id, int quantity, float price);
 struct Product createRandomProduct(int id);
 
 struct Customer {
@@ -32,6 +34,7 @@ struct Customer {
 };
 
 void printCustomers(struct Customer *customers, int num_customers);
+void printCustomersWithPurchasedItems(struct Customer *customers, int num_customers);
 struct Customer createCustomer(int id, float balance);
 struct Customer createRandomCustomer(int id, struct Product *products, int num_products);
 

@@ -11,7 +11,7 @@ struct Product createProduct(int id, int quantity, float price) {
 void printProducts(struct Product *products, int num_products) {
     // Print the header for the product list
     // printf("Initial products:\n");
-    printf("Product ID Quantity Price\n");
+    printf("ID Quantity Price\n");
     // Loop through the product array and print out each product's information
     for (int i = 0; i < num_products; i++) {
         printf("%d %d %.2f\n", products[i].product_ID, products[i].product_Quantity, products[i].product_Price);
@@ -33,6 +33,18 @@ void printCustomers(struct Customer *customers, int num_customers){
         printf("%d %.2f\n", customers[i].customer_ID, customers[i].customer_Balance);
         printf("Ordered Items:\n");
         printProducts(customers[i].ordered_Items, customers[i].num_ordered_Items);
+        printf("--------------------\n");
+    }
+}
+
+void printCustomersWithPurchasedItems(struct Customer *customers, int num_customers) {
+    for (int i = 0; i < num_customers; i++) {
+        printf("CustomerID Remaining Balance\n");
+        printf("%d %.2f\n", customers[i].customer_ID, customers[i].customer_Balance);
+        printf("Ordered Items:\n");
+        printProducts(customers[i].ordered_Items, customers[i].num_ordered_Items);
+        printf("Purchased Items:\n");
+        printProducts(customers[i].purchased_Items, customers[i].num_purchased_Items);
         printf("--------------------\n");
     }
 }
